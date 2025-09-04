@@ -1,0 +1,29 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+void swap(vector<int>::iterator i, vector<int>::iterator j) //传入迭代器即可，不需要整个容器
+ {
+	
+	int temp = *i;
+	      *i = *j;
+	      *j = temp;
+ }
+int main()//选择排序
+{
+	vector<int> a = { 5, 2, 8, 1, 9 };
+	for(auto i = a.begin(); i != a.end() ; ++i)
+		{		for (auto j = i ; j > a.begin() ; --j)
+
+			if ( *j < * (j-1) ) //和前一项对比，而非最开始i*
+			{
+				swap(j, j-1);
+			}
+		}
+	for (auto num : a)
+	{
+		cout << num << " ";
+	}
+	cout << endl;
+
+	return 0;
+}
