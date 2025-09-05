@@ -19,6 +19,9 @@ void process(vector<int>&a,const vector<int>::iterator L,const vector<int>::iter
 	auto mid = L + ((R - L) >> 1);
 		process(a, L, mid);
 		process(a, mid + 1, R);
+//这里的递归过程是在一步又一步的将数组划分为块，直到不能划分为止
+//左右两个互为相邻的块进行比较和合并
+//然后合并的数组又成为新的块，又进行比较，直到成为一个块
 		merge(a , L , R , mid);
 }
 void static merge(vector<int>&a, const vector<int>::iterator L,const vector<int>::iterator R,const vector<int>::iterator mid)
