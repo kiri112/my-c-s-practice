@@ -1,0 +1,72 @@
+#include<iostream>
+#include<vector>
+#include<cmath>
+using namespace std;
+void static merge(vector<int>& a, const vector<int>::iterator L, const vector<int>::iterator R, const vector<int>::iterator mid);
+void swap(vector<int>::iterator i, vector<int>::iterator j)
+ {
+	
+	int temp = *i;
+	      *i = *j;
+	      *j = temp;
+ }
+void process(vector<int>&a,const vector<int>::iterator L,const vector<int>::iterator R)
+{
+	if (L == R)
+	{
+		return;
+	}
+	auto mid = L + ((R - L) >> 1);
+		process(a, L, mid);
+		process(a, mid + 1, R);
+		merge(a , L , R , mid);
+}
+void static merge(vector<int>&a, const vector<int>::iterator L,const vector<int>::iterator R,const vector<int>::iterator mid)
+{   
+	vector<int> help;
+	vector<int>::iterator it_L = L;
+	vector<int>::iterator it_R = mid + 1;
+	while (it_L <= mid && it_R <= R)
+	{
+		if (*it_L <= *it_R)
+		{
+			help.push_back(*it_L);
+			++it_L;
+		}
+		else
+		{
+			help.push_back(*it_R);
+			++it_R;
+		}
+	}
+	while (it_L <= mid)
+	{
+		help.push_back(*it_L);
+		++it_L;
+	}
+	while (it_R <= R)
+	{
+		help.push_back(*it_R);
+		++it_R;
+
+	}
+	decltype(it_R) it = L;
+	for (auto i : help)
+	{
+		*it = i;
+		it++;
+	}
+}
+
+int main()
+{
+	vector<int> a{ 5,4,6,7,3,1 };
+	process( a, a.begin(), a.end()-1);
+	auto it = a.begin();
+	for (auto i : a)
+	{
+		*it = i;
+		cout << *it++ << " ";
+	}
+	return 0;
+}
