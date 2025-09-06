@@ -1,0 +1,33 @@
+void compare(vector<int> &a , int standard )
+{
+	auto fast_ptr = a.begin();
+	auto slow_ptr = a.begin();
+	while (fast_ptr != a.end()-1)
+	{
+		if (*fast_ptr <= standard)
+		{
+			++fast_ptr;
+			++slow_ptr;
+			swap(slow_ptr, fast_ptr);
+//当快指针遇到小于等于该数字的时候就和慢指针进行交换
+		}
+		else
+		{
+			++fast_ptr;
+//当快指针遇到大于该数字的时候就直接跳过
+		}
+	}
+}
+
+int main()
+{
+	vector<int> a{ 5,4,6,7,3,1 };
+	compare(a, 4);
+	auto it = a.begin();
+	for (auto i : a)
+	{
+		*it = i;
+		cout << *it++ << " ";
+	}
+
+}
