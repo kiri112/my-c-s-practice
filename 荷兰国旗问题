@@ -1,0 +1,42 @@
+void compare_three(vector<int>& a, int standard)
+{
+	auto fast_ptr = a.begin();
+	auto slow_ptr = a.begin();
+	auto end_ptr = a.end();
+  //三指针，当小于标准值的时候，快指针和慢指针进行交换
+  //当等于标准值的时，快指针直接++
+  //当大于标准值的时候，快指针不动，同时与快指针交换位置，然后end指针进行--，将大于区域向左扩充
+	while (fast_ptr != end_ptr)
+	{
+		if (*fast_ptr < standard)
+		{
+			swap(slow_ptr, fast_ptr);
+			++fast_ptr;
+			++slow_ptr;
+		}
+    //先交换，再对快慢指针++
+		if (*fast_ptr == standard)
+
+		{
+			++fast_ptr;
+		}
+		if (*fast_ptr > standard)
+		{
+			--end_ptr;
+			swap(fast_ptr, end_ptr);
+		}
+	}
+} 
+
+int main()
+{
+	vector<int> a{ 5,4,6,7,3,1 };
+	compare_three(a, 4);
+	auto it = a.begin();
+	for (auto i : a)
+	{
+		*it = i;
+		cout << *it++ << " ";
+	}
+
+}
