@@ -1,0 +1,38 @@
+vector<int>::iterator compare_three(vector<int>& a , int standard , vector<int>::iterator L , vector<int>::iterator R)
+{
+	auto fast_ptr = L;
+	auto slow_ptr = L;
+	auto end_ptr = R;
+	while (fast_ptr <= end_ptr)
+	{
+		if (*fast_ptr < standard)
+		{
+			swap(slow_ptr, fast_ptr);
+			++fast_ptr;
+			++slow_ptr;
+		}
+		else if (*fast_ptr == standard)
+		{
+			++fast_ptr;
+		}
+		else 
+		{
+			--end_ptr;
+			swap(fast_ptr, end_ptr);
+		}
+	}
+	return slow_ptr;
+} 
+void quicksort(vector<int>& a, const vector<int>::iterator L, const vector<int>::iterator R )
+{
+	if (L < R)
+	{
+		if (L >= R || L < a.begin() || R >= a.end()) return;
+//这行防御性代码一定要写，不然测试全反排序的时候最后fast_ptr会超出范围，和范围外的end_ptr进行交换;
+		const int pivot_value = *L;
+	  auto pivot = compare_three( a , pivot_value ,L , R );
+//L , R 是为了更新范围
+		if(pivot > L)quicksort(a, L, pivot - 1 );
+		if(pivot < R)quicksort(a, pivot + 1 , R);
+	}
+}
