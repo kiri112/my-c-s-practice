@@ -1,0 +1,52 @@
+void heapInsert(int Index , vector<int> &a)
+{
+	if (Index < a.size() && Index > 0)
+	{
+		while (a.at((Index - 1) / 2) < a.at(Index))
+		{
+			swap(a.at(Index), a.at((Index - 1) / 2));
+			Index = (Index - 1) / 2;
+		}
+	}
+	return;
+}
+void heapify(int Index, vector<int>& a, int heapsize)
+{
+	int left = (Index * 2) + 1;//左孩子
+	int right = (Index * 2) + 2;//右孩子
+	while (left < Index)//当前节点下方仍然有孩子时
+	{
+		int largest = a.at(left) > a.at(right) || heapsize > right? left : right;//对比左孩子和右孩子，找出左右孩子哪个更大的下标
+		if (a.at(Index) > a.at(largest))//判断当前下标是否大于子节点
+		{
+			swap(a.at(Index), a.at(largest));//大于子节点则进行交换
+			Index = largest;//更新下标，让当前下标为子节点最大的那个
+			left = (Index * 2) + 1;//更新左右下标
+	        right = (Index * 2) + 2;
+		}
+		else
+		{
+			break;//即当前下标不比子节点更大的那个大的时候
+		}
+
+	}
+}
+void heapsort(vector<int> a)
+{
+	if (a.size() < 2)
+	{
+		return;
+	}
+	for(int heapsize = 0 ; heapsize < a.size() ; heapsize++)
+	heapInsert(heapsize++, a);
+	int heapsize = a.size()- 1;
+	swap(a.at(0), a.at(--heapsize));
+	while (heapsize > 0)
+	{
+		heapify(0 , a,heapsize);
+		swap(a.at(0), a.at(--heapsize));
+
+	}
+
+
+}
