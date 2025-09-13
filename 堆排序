@@ -1,8 +1,9 @@
-void heapInsert(int Index , vector<int> &a)
+void heapInsert(int Index , vector<int> &a) //在容器中插入一个数字，让这个数字成为堆的一部分
 {
-	if (Index < a.size() && Index > 0)
+	if (Index < a.size() && Index > 0)//当下标是一个有效值时
 	{
-		while (a.at((Index - 1) / 2) < a.at(Index))
+		while (a.at(( Index - 1) / 2) < a.at(Index))//和父节点进行比较，大于父节点则进行交换
+			                                        //子节点和父节点的关系是，(C-1)/2 = F
 		{
 			swap(a.at(Index), a.at((Index - 1) / 2));
 			Index = (Index - 1) / 2;
@@ -10,43 +11,68 @@ void heapInsert(int Index , vector<int> &a)
 	}
 	return;
 }
-void heapify(int Index, vector<int>& a, int heapsize)
+void heapify(int Index, vector<int>& a, int heapsize)//随机插入一个数字使其堆化的过程
 {
-	int left = (Index * 2) + 1;//左孩子
-	int right = (Index * 2) + 2;//右孩子
-	while (left < Index)//当前节点下方仍然有孩子时
+	while (true)
 	{
-		int largest = a.at(left) > a.at(right) || heapsize > right? left : right;//对比左孩子和右孩子，找出左右孩子哪个更大的下标
-		if (a.at(Index) > a.at(largest))//判断当前下标是否大于子节点
+		int left = (Index * 2) + 1;    // 左孩子索引
+		int right = (Index * 2) + 2;   // 右孩子索引
+		int largest = Index;           // 假设当前节点是最大的
+
+		// 检查左孩子是否存在且是否比当前最大值大
+		if (left < heapsize && a[left] > a[largest])
 		{
-			swap(a.at(Index), a.at(largest));//大于子节点则进行交换
-			Index = largest;//更新下标，让当前下标为子节点最大的那个
-			left = (Index * 2) + 1;//更新左右下标
-	        right = (Index * 2) + 2;
+			largest = left;
+		}
+		// 检查右孩子是否存在且是否比当前最大值大
+		if (right < heapsize && a[right] > a[largest])
+		{
+			largest = right;
+		}
+		// 如果最大值不是当前节点，需要交换
+		if (largest != Index)
+		{
+			swap(a[Index], a[largest]);
+			Index = largest;  // 继续向下调整
 		}
 		else
 		{
-			break;//即当前下标不比子节点更大的那个大的时候
+			break;  // 当前节点已经满足堆性质，退出循环
 		}
-
 	}
 }
-void heapsort(vector<int> a)
+void heapsort(vector<int> &a)
 {
-	if (a.size() < 2)
+	if (a.size() - 1 < 2)
 	{
 		return;
 	}
-	for(int heapsize = 0 ; heapsize < a.size() ; heapsize++)
-	heapInsert(heapsize++, a);
-	int heapsize = a.size()- 1;
-	swap(a.at(0), a.at(--heapsize));
+	for (int heapsize = 0; heapsize < a.size(); heapsize++)
+	{
+		heapInsert(++heapsize , a);//堆化的过程
+	}
+	int heapsize = a.size()-1; //先记录堆有多大
+	swap(a.at(0), a.at(heapsize--));//先与最后一个数字进行交换，提出当前堆里的最大值
+	                                //先前就是根堆，如果放到while循环里浪费一次堆化过程
 	while (heapsize > 0)
 	{
-		heapify(0 , a,heapsize);
-		swap(a.at(0), a.at(--heapsize));
+		heapify(0 , a , heapsize);//再重新进行堆化
+		swap(a.at(0), a.at(heapsize--));
 
 	}
+}
 
+int main()
+{
+	vector<int> a{ 5,4,6,7,3,1,6,7,9,8,6 };
+	vector<int>test6 = { 9, 8, 7, 6, 5 };
+	vector<int>test{ 6,5,4,7,3};
+	auto it = test.begin();
+	heapsort ( test );
+	for (auto i : test)
+	{
+		*it = i;
+		cout << *it++ << " ";
+	}
 
 }
