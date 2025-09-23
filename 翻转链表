@@ -1,0 +1,78 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+
+ //大致思路为先用快慢指针找到链表的中间值，将链表后半部分翻转，再把链表拆成前后两个部分，将两个部分重新合并
+class Solution 
+{
+
+public:
+    void reorderList(ListNode* head)
+    { if(head == nullptr)
+    {
+        return;
+    }
+       ListNode *ptr = middle(head);
+       ListNode *L2 = reverseList(ptr->next);// 必须是中间节点的下一个，后面要将两个链表断开要用到slow_ptr
+       ptr->next = nullptr; 
+       mergeList(head , L2);
+    }
+
+    ListNode*middle(ListNode* head)//快慢指针寻找链表中间节点
+    {
+        ListNode *fast_ptr = head;
+        ListNode *slow_ptr = head;
+        while (fast_ptr -> next != nullptr)
+        {
+            fast_ptr = fast_ptr -> next;
+            slow_ptr = slow_ptr -> next;
+            if(fast_ptr -> next != nullptr)
+            {
+               fast_ptr = fast_ptr -> next;
+            }
+        }
+        return slow_ptr;
+    }
+
+    ListNode* reverseList(ListNode* head) //翻转链表
+    {
+        ListNode *pre = head; 
+        ListNode *nur = nullptr;
+         while(pre != nullptr) 
+        {
+            ListNode *temp = pre -> next; //保存pre的下一个节点
+            pre -> next = nur; //让pre指向前一个节点，这里如果是第一个节点，那么指向的是尾节点
+            nur = pre; 更新nur，让nur向前一步
+            pre = temp; 更新pre 让pre向前一步
+
+
+        }
+        return nur;
+    }
+
+    void mergeList(ListNode *L1 , ListNode *L2) //融合两个链表
+    {
+        ListNode *temp1;
+        ListNode *temp2;
+        while(L1 != nullptr && L2 != nullptr) 
+        {
+           ListNode *temp1 = L1 -> next; //两个链表均当前节点的下一个节点
+           ListNode *temp2 = L2 -> next;
+
+           L1 -> next = L2;  先让L1指向L2的第一个节点
+           L2 -> next = temp1; 再让L2指向L1的节点
+
+           L1 = temp1; 更新两个链表的当前位置，指向本属于自己链表的下一个位置
+           L2 = temp2;
+        }
+    }
+
+};
