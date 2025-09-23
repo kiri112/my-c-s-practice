@@ -1,0 +1,26 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+//大致思路为利用哈希表来记住每一个走过的节点，找到重复节点后返回该节点的位置
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) 
+    {
+        unordered_set<ListNode *> visited; //哈希表定位
+        while (head != nullptr)
+        {
+            if( visited.count(head) ) //count是计数的意思，即当找到了循环的节点，就返回该节点
+            {
+                return head;
+            }
+            visited.insert(head);
+            head = head -> next;
+        }
+        return nullptr;
+    }
+};
