@@ -1,0 +1,37 @@
+给你一个整数数组 nums 和一个整数 k 。请你从 nums 中满足下述条件的全部子数组中找出最大子数组和：
+
+子数组的长度是 k，且
+子数组中的所有元素 各不相同 。
+返回满足题面要求的最大子数组和。如果不存在子数组满足这些条件，返回 0 。
+
+子数组 是数组中一段连续非空的元素序列。
+class Solution {
+
+public:
+    long long maximumSubarraySum(vector<int>& nums, int k) {
+        long long ans = 0, s = 0;  
+        unordered_map<int, int> cnt;
+        for (int i = 0; i < nums.size(); i++) {
+            s += nums[i];
+            cnt[nums[i]]++;  //元素进入滑动窗口，同时哈希表记录元素
+
+            int left = i - k + 1;
+            if (left < 0) 
+            { 
+                continue;
+            }
+            if (cnt.size() == k)  // 当哈希表的大小为k时才更新答案，其实就是size == k ，哈希表没有重复元素，因为一共只有k个元素被哈希表记录，只有k个元素分别被记录一次的时候哈希表的size才会是k
+            {
+                ans = max(ans, s);
+            }
+            int out = nums[left];  //出滑动窗口
+            s -= out;
+            if (--cnt[out] == 0)  // 当元素即将要出滑动窗口的时候，如果该元素只有1个，那么删除其元素，否则哈希表的大小表示不正确
+            {
+                cnt.erase(out);
+            }
+        }
+
+        return ans;
+    }
+};
