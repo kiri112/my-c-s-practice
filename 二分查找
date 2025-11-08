@@ -1,0 +1,21 @@
+1385. 两个数组间的距离值
+给你两个整数数组 arr1 ， arr2 和一个整数 d ，请你返回两个数组之间的 距离值 。
+「距离值」 定义为符合此距离要求的元素数目：对于元素 arr1[i] ，不存在任何元素 arr2[j] 满足 |arr1[i]-arr2[j]| <= d 。
+class Solution {
+public:
+    int findTheDistanceValue(vector<int>& arr1, vector<int>& arr2, int d)
+    {
+        sort( arr2.begin() , arr2.end() );
+        int cnt = 0;
+        for (int x : arr1)
+        {
+            auto it = ranges::lower_bound( arr2 , x - d );//找出为最小边界的下标
+            if( it == arr2.end() || *it > x + d )//当所有的值都小于最小边界时||当找出的那个最小边界下标的值大于最大边界值时
+            {
+                cnt++;
+            }
+        }
+        return cnt;
+       
+    }
+};
