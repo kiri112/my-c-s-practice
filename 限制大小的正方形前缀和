@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int maxSideLength(vector<vector<int>>& mat, int threshold)
+    {
+        int m = mat.size()  , n = mat[0].size() ;
+        int ans = 0;
+        vector< vector<int> >PreNums;
+        PreNums.resize(m + 1, vector<int>(n + 1) );
+        for(int i = 0 ; i < m ; ++i )
+        {
+            for(int j = 0 ; j < n ; ++j)
+            {
+                PreNums[i + 1][j + 1] = PreNums[i + 1][j] + PreNums[i][j + 1] -PreNums[i][j]  + mat[i][j];//计算二维数组前缀和
+                int SL = min(i , j) + 1; // 当j < i时，此时SL就是以j为边长的正方形 , 当i < j 时 ， 就是以 i为边长的正方形
+                while(SL > ans) //只统计大于SL的答案，小于SL直接省略
+            {
+                    if(PreNums[i + 1][j + 1] - PreNums[i + 1][j - SL + 1] - PreNums[i - SL + 1][j + 1] + PreNums[i - SL + 1][j - SL + 1] <= threshold ) // 此时正方形的边长就是SL，
+                                                                                                                                                          SL怎么来的: Len: SL = i - (i - SL + 1) wid = j - j (j - SL + 1)
+
+                {
+                    ans = SL; // 如果在SL这个边长下找到了答案且ans>=SL 就更新答案，然后j++，去下一行（列）找更大的值
+                    break;
+                }
+                --SL;
+            }
+
+            }
+        }
+        return ans;
+    }
+};
