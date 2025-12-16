@@ -1,1 +1,39 @@
+给你一个字符串 s，「k 倍重复项删除操作」将会从 s 中选择 k 个相邻且相等的字母，并删除它们，使被删去的字符串的左侧和右侧连在一起。
 
+你需要对 s 重复进行无限次这样的删除操作，直到无法继续为止。
+
+在执行完所有删除操作后，返回最终得到的字符串。
+
+本题答案保证唯一。
+
+class Solution {
+public:
+	string removeDuplicates(string s, int k)
+	{
+		vector< pair<char, int> > str;//定义一个pair类型的Vector数组
+		for (auto& x : s)
+		{
+			if (!str.empty() && x == str.back().first)//当str不为空的时，且s[i]等于栈顶元素时候
+			{
+				if (++str.back().second == k)  //判断栈顶元素时候为k，如果为k就弹出栈顶元素
+				{
+					str.pop_back();
+				}
+			}
+			else
+			{
+				str.push_back(make_pair(x, 1)); // 假如栈顶元素不是s[i]就重新构建一个pair，然后存储进str里面
+			}
+		}
+			string ans; // 输出答案
+			for (auto& x : str)
+			{
+				int l = x.second;
+				while (l--)
+				{
+					ans += x.first;
+				}
+			}
+		return ans;
+	}
+};
